@@ -2,3 +2,10 @@ body {
   padding: 10px;
   font-family: sans-serif;
 }
+.thumbnail{
+  min-height: 500px;
+  max-height: 500px;
+}
+.caption{
+  margin-bottom: 10px;
+}
