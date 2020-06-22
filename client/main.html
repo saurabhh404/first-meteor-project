@@ -1,13 +1,22 @@
 <head>
   <title>demo</title>
+
 </head>
 
 <body>
-  {{> imageAddForm}}
+  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+
   <!-- {{> hello}} -->
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      {{> loginButtons}}
+    </div>
+
+  </nav>
   <div class="container">
-    <h1>Your Gallery</h1>
-    {{>myImage}}
+    <h1 class="display-1">Welcome to ImageShare {{username}}!</h1>
+    {{> imageFormModal}}
+    {{> myImage}}
   </div>
 </body>
 
@@ -15,43 +24,57 @@
   <button>Click Me</button>
   <p>You've pressed the button {{counter}} times.</p>
 </template> -->
-<template name="imageAddForm">
-  <div class="modal fade" id="imageFormModal">
+<template name="imageFormModal">
+  <!-- <div class="modal fade" id="imageFormModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <div class="modal-title">
           </div>
         </div>
-        <div class="modal-body">
-          <form class="js-add-image">
-            <input type="text" name="img_src" value="" /><br>
-            <input type="text" name="img_alt" value="" /><br>
-            <button type="submit" name="button" class="btn btn-success">Save</button>
-          </form>
-        </div>
+        <div class="modal-body"> -->
+  {{#if currentUser}}
+    <form class="js-add-image">
+      <div class="form-group">
+        <label for="">Image Source</label>
+        <input type="text" class="form-control" placeholder="Enter source" name="img_src" value="" />
+        <label for="">Image Alt</label>
+        <input type="text" class="form-control" placeholder="Enter alt text" name="img_alt" value="" />
+      </div>
+      <button type="submit" name="button" class="btn btn-success">Save</button>
+    </form>
+  {{/if}}
+  <br>
+  <!-- </div>
         <div class="modal-footer">
           <button class="btn btn-warning" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
-  </div>
-
+  </div> -->
 
 </template>
 
 <template name="myImage">
-  <button class="btn btn-success js-show-image-form">Add Image</button>
+  <!-- <button class="btn btn-success js-show-image-form">Add Image</button> -->
+  <!-- <button type="button" data-toggle="modal" data-target="#imageFormModal" class="btn btn-primary">Launch modal</button> -->
+<h3>
+  {{#if filtering_images}}
+    Showing images by {{getFilterUser}}. <br> <a href="#" class="small js-unset-image-filter">Show all images</a>
+  {{/if}}
+
+</h3>
+
   <div class="row">
     {{#each images}}
-      <div class="col-xs-12 col-md-3" id="{{_id}}">
+      <div class="col-xs-12 col-md-6 col-lg-3" id="{{_id}}">
         <div class="thumbnail">
           <img src="{{img_src}}" alt="{{img_alt}}" class="js-image">
 
           <div class="caption">
-            <h3>thumbnail label</h3>
+            <p><a href="#" class="js-set-image-filter">User Id: {{getUser createdBy}}</a></p>
             <p>Rating: {{rating}}</p>
-            <p>{{> starsRating size='lg' rating=rating mutable=true class="js-rate-image" id=_id}}</p>
+            <p>{{> starsRating rating=rating mutable=true class="js-rate-image" id=_id}}</p>
             <button type="button" name="button" class="js-del-image btn btn-warning">Delete</button>
           </div>
         </div>
