@@ -4,8 +4,8 @@ import {
 import {
   Mongo
 } from 'meteor/mongo'
+import '../shared/collections.js'
 
-Images = new Mongo.Collection("images")
 
 Meteor.startup(() => {
   if (Images.find().count() == 0) {

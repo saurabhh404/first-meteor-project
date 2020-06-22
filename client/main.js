@@ -10,11 +10,45 @@ import {
 } from 'meteor/mongo'
 
 import './main.html';
+import '../shared/collections.js'
 
-Images = new Mongo.Collection("images")
+//routing
+Router.configure({
+  layoutTemplate: 'ApplicationLayout'
+})
 
+Router.route('/', function() {
+  this.render('welcome', {
+    to: 'main'
+  })
+})
+Router.route('/images', function() {
+  this.render('navbar', {
+    to: 'navbar'
+  })
+  this.render('myImage', {
+    to: 'main'
+  })
+})
+Router.route('/image/:_id', function() {
+  this.render('navbar', {
+    to: 'navbar'
+  })
+  this.render('singleImage', {
+    to: 'main',
+    data: function() {
+      return Images.findOne({
+        _id: this.params._id
+      })
+    }
+  })
+})
+
+
+
+
+//infiniscroll
 Session.set("imageLimit", 8)
-
 lastScrollTop = 0;
 $(window).scroll(function(event) {
 
@@ -29,29 +63,10 @@ $(window).scroll(function(event) {
 
 })
 
+//accountsconfig
 Accounts.ui.config({
   passwordSignupFields: "USERNAME_AND_EMAIL"
 })
-
-// var img_data = [{
-//   img_src: "/victor.jpg",
-//   img_alt: "Victor with his puppy doll"
-// }, {
-//   img_src: "/victor2.jpg",
-//   img_alt: "victor waiting for ya"
-// }, {
-//   img_src: "/yuri.jpg",
-//   img_alt: "yuri is sad"
-// }, {
-//   img_src: "ready.png",
-//   img_alt: "the couple is ready for the finale!"
-// }]
-
-// Template.myImage.helpers({
-//   images: img_data
-// });
-
-
 
 Template.myImage.helpers({
   images: function() {

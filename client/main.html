@@ -4,26 +4,36 @@
 </head>
 
 <body>
-  <!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+</body>
 
-  <!-- {{> hello}} -->
+<template name="ApplicationLayout">
+  {{> yield "navbar"}}
+  {{> yield "main"}}
+</template>
+
+<template name="welcome">
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Welcome to ImageShare {{username}}!</h1>
+      <a href="/images" class="btn btn-primary btn-lg">Enter</a>
+    </div>
+  </div>
+</template>
+
+<template name="singleImage">
+  <div class="container">
+    <h2>{{img_alt}}</h2>
+    <a href="/images"><img src="/{{img_src}}" alt="{{img_alt}}" style="max-width: 100%"></a>  
+  </div>
+</template>
+
+<template name="navbar">
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
       {{> loginButtons}}
     </div>
-
   </nav>
-  <div class="container">
-    <h1 class="display-1">Welcome to ImageShare {{username}}!</h1>
-    {{> imageFormModal}}
-    {{> myImage}}
-  </div>
-</body>
-
-<!-- <template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
-</template> -->
+</template>
 <template name="imageFormModal">
   <!-- <div class="modal fade" id="imageFormModal">
     <div class="modal-dialog">
@@ -52,33 +62,32 @@
       </div>
     </div>
   </div> -->
-
 </template>
 
 <template name="myImage">
   <!-- <button class="btn btn-success js-show-image-form">Add Image</button> -->
   <!-- <button type="button" data-toggle="modal" data-target="#imageFormModal" class="btn btn-primary">Launch modal</button> -->
-<h3>
-  {{#if filtering_images}}
-    Showing images by {{getFilterUser}}. <br> <a href="#" class="small js-unset-image-filter">Show all images</a>
-  {{/if}}
+  <div class="container">
+    <h3>
+      {{#if filtering_images}}
+        Showing images by {{getFilterUser}}. <br> <a href="#" class="small js-unset-image-filter">Show all images</a>
+      {{/if}}
+    </h3>
+    <div class="row">
+      {{#each images}}
+        <div class="col-xs-6 col-md-4 col-lg-3" id="{{_id}}">
+          <div class="thumbnail">
+            <a href="/image/{{_id}}"><img src="{{img_src}}" alt="{{img_alt}}" class="js-image"></a>
 
-</h3>
-
-  <div class="row">
-    {{#each images}}
-      <div class="col-xs-12 col-md-6 col-lg-3" id="{{_id}}">
-        <div class="thumbnail">
-          <img src="{{img_src}}" alt="{{img_alt}}" class="js-image">
-
-          <div class="caption">
-            <p><a href="#" class="js-set-image-filter">User Id: {{getUser createdBy}}</a></p>
-            <p>Rating: {{rating}}</p>
-            <p>{{> starsRating rating=rating mutable=true class="js-rate-image" id=_id}}</p>
-            <button type="button" name="button" class="js-del-image btn btn-warning">Delete</button>
+            <div class="caption">
+              <p><a href="#" class="js-set-image-filter">User Id: {{getUser createdBy}}</a></p>
+              <p>Rating: {{rating}}</p>
+              <p>{{> starsRating rating=rating mutable=true class="js-rate-image" id=_id}}</p>
+              <button type="button" name="button" class="js-del-image btn btn-warning">Delete</button>
+            </div>
           </div>
         </div>
-      </div>
-    {{/each}}
+      {{/each}}
+    </div>
   </div>
 </template>
